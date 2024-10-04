@@ -3,14 +3,13 @@ Roctris is a minimal clone of a popular video game, created to learn the Roc pro
 
 ![](roctris.gif)
 
-It has only been compiled and tested with WSL2 running `Ubuntu 20.04.3 LTS`
+It has only been compiled and tested on Linux Mint 22 (Ubuntu 24.04)
 
 ## Installation 
 
-1. Download [Roc](https://github.com/rtfeldman/roc/) and download [Roctris](https://github.com/cjcone/roctris/) next to Roc.
-2. Follow Roc's instructions for setting up the nix shell.
-3. navigate to the Roc folder, run `nix-shell`
-4. run `cargo run ../roctris/Roctris.roc`
+1. Download and install [Roc](https://github.com/roc-lang/roc), either from source or from the nightly build.
+2. Build the host: `roc dev --linker=legacy ./platform/main-build.roc`
+3. Build and run Roctris: `roc dev --linker=legacy ./game/roctris.roc`
 
 ## Playing
 

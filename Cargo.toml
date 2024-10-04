@@ -1,0 +1,9 @@
+[workspace]
+members = ["platform/crates/roc_host", "platform/crates/roc_host_lib"]
+resolver = "2"
+
+[workspace.package]
+authors = ["Jared Cone"]
+edition = "2021"
+license = "UPL-1.0"
+version = "0.0.1"

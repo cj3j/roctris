@@ -1,6 +1,5 @@
-interface Thread
-    exposes [ sleep ]
-    imports [ pf.Effect, Task.{Task} ]
+module [sleepSeconds]
 
-sleep : F64 -> Task {} *
-sleep = \seconds -> Effect.map (Effect.sleep seconds) (\_ -> Ok {})
+import PlatformTasks
+
+sleepSeconds = PlatformTasks.sleepSeconds

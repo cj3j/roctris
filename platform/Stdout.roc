@@ -1,9 +1,6 @@
-interface Stdout
-    exposes [ line, put ]
-    imports [ pf.Effect, Task.{ Task } ]
+module [line, put]
 
-line : Str -> Task {} *
-line = \str -> Effect.map (Effect.putLine str) (\_ -> Ok {})
+import PlatformTasks
 
-put : Str -> Task {} *
-put = \str -> Effect.map (Effect.put str) (\_ -> Ok {})
+line = PlatformTasks.stdoutLine
+put = PlatformTasks.stdoutPut

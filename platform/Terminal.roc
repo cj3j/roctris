@@ -1,34 +1,28 @@
-interface Terminal
-    exposes [
-        rawMode,
-        clear,
-        cursorVisible,
-        goto,
-        nextKey,
-        forecolor,
-        forecolorReset,
-        backcolor,
-        backcolorReset,
-        color,
-    ]
-    imports [ pf.Effect, Task ]
-    
-rawMode = \raw -> Effect.map (Effect.terminalRawMode raw) (\_ -> Ok {})
-    
-clear = Effect.map (Effect.terminalClear {}) (\_ -> Ok {})
+module [
+    setRawMode,
+    clear,
+    setCursorVisible,
+    goto,
+    getNextKey,
+    setForecolor,
+    resetForecolor,
+    setBackcolor,
+    resetBackcolor,
+    setColors,
+]
 
-cursorVisible = \visible -> Effect.map (Effect.terminalSetCursorVisible visible) (\_ -> Ok {})
+import PlatformTasks
 
-goto = \x, y -> Effect.map (Effect.terminalGoto (Num.toU16 x) (Num.toU16 y)) (\_ -> Ok {})
+setRawMode = PlatformTasks.terminalSetRawMode
+clear = PlatformTasks.terminalClear
+setCursorVisible = PlatformTasks.terminalSetCursorVisible
+goto = PlatformTasks.terminalGoto
+getNextKey = PlatformTasks.terminalGetNextKey
+setForecolor = PlatformTasks.terminalSetForecolor
+resetForecolor = PlatformTasks.terminalResetForecolor
+setBackcolor = PlatformTasks.terminalSetBackcolor
+resetBackcolor = PlatformTasks.terminalResetBackcolor
 
-nextKey : Task.Task Str *
-nextKey = Effect.after Effect.terminalNextKey Task.succeed
-
-forecolor = \r, g, b -> Effect.map (Effect.terminalForecolor r g b) (\_ -> Ok {})
-forecolorReset = Effect.map Effect.terminalForecolorReset (\_ -> Ok {})
-backcolor = \r, g, b -> Effect.map (Effect.terminalBackcolor r g b) (\_ -> Ok {})
-backcolorReset = Effect.map Effect.terminalBackcolorReset (\_ -> Ok {})
-
-color = \fr, fg, fb, br, bg, bb ->
-    _ <- forecolor fr fg fb |> Task.await
-    backcolor br bg bb
+setColors = \fr, fg, fb, br, bg, bb ->
+    setForecolor! fr fg fb
+    setBackcolor! br bg bb
