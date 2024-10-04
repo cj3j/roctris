@@ -130,6 +130,7 @@ Model : {
     rowsCleared : U64,
     level : U64,
     score : U64,
+    frame : U64,
 }
 
 ###############################################
@@ -147,7 +148,21 @@ newGame = \randState ->
     rowsCleared = 0
     level = 1
     score = 0
-    { randState, state, input, teleportDown, moveTimer, block, debris, rowsToDrop, rowsCleared, level, score }
+    frame = 0
+    {
+        randState,
+        state,
+        input,
+        teleportDown,
+        moveTimer,
+        block,
+        debris,
+        rowsToDrop,
+        rowsCleared,
+        level,
+        score,
+        frame,
+    }
 
 moveInput = \key ->
     # TODO couldn't match on Keys, has to use if+else "pattern is malformed"
@@ -195,7 +210,10 @@ updateStartGame : Model, Str -> Model
 updateStartGame = \model, key ->
     if key == Keys.spacebar then
         state = Playing
-        { model & state }
+
+        # Poor man's random, use the frame count when they press spacebar as random seed
+        randState = Random.seed32 (Num.toU32 model.frame)
+        { model & state, randState }
     else
         model
 
@@ -415,9 +433,10 @@ update = \model, message ->
 
         Tick deltaSeconds ->
             when model.state is
-                Intro -> model
+                Intro -> { model & frame: model.frame + 1 }
                 Playing ->
                     model
+                    |> \m -> { m & frame: m.frame + 1 }
                     |> updateSpawnBlock
                     |> updateRowsToDrop
                     |> updateTeleportDown

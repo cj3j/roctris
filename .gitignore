@@ -9,7 +9,7 @@
 *.rm
 
 Cargo.lock
-./game/Roctris
+./game/roctris
 Scratch
 
 .DS_Store
